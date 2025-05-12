@@ -1,3 +1,76 @@
+// Login Form Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.getElementById('login-form');
+    const loginOverlay = document.getElementById('login-overlay');
+    
+    // Set initial username and password values
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    
+    if (usernameInput && passwordInput) {
+        usernameInput.setAttribute('placeholder', 'Username');
+        passwordInput.setAttribute('placeholder', 'Password');
+        
+        // Set default value to "admin" for the username input
+        usernameInput.value = "admin";
+    }
+    
+    // Create an error message element (initially hidden)
+    const errorMessage = document.createElement('div');
+    errorMessage.className = 'login-error';
+    errorMessage.style.color = '#e74c3c';
+    errorMessage.style.marginTop = '10px';
+    errorMessage.style.display = 'none';
+    errorMessage.textContent = 'Invalid username or password!';
+    
+    // Add error message to the form
+    if (loginForm) {
+        loginForm.appendChild(errorMessage);
+        
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = usernameInput.value;
+            const password = passwordInput.value;
+            
+            // Validate credentials
+            const isValid = (username === 'admin' && password === 'password');
+            
+            // Add a small delay to simulate processing
+            const loginBtn = document.querySelector('.login-btn');
+            loginBtn.textContent = 'Logging in...';
+            loginBtn.disabled = true;
+            
+            setTimeout(() => {
+                if (isValid) {
+                    // Valid credentials - hide error and proceed
+                    errorMessage.style.display = 'none';
+                    
+                    // Hide login overlay
+                    loginOverlay.style.display = 'none';
+                    
+                    // Enable scrolling
+                    document.body.classList.remove('login-active');
+                    
+                    // Reset the form
+                    loginForm.reset();
+                } else {
+                    // Invalid credentials - show error
+                    errorMessage.style.display = 'block';
+                    
+                    // Reset password field only
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+                
+                // Reset button state
+                loginBtn.textContent = 'Login';
+                loginBtn.disabled = false;
+            }, 800);
+        });
+    }
+});
+
 // DOM Elements
 const searchInput = document.getElementById('search-input');
 const searchButton = document.getElementById('search-button');
